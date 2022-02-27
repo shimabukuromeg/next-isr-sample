@@ -191,7 +191,7 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
             >
               <Text
                 h1
-                size={40}
+                size={28}
                 css={{
                   margin: 0,
                   textGradient: '45deg, $yellow500 -20%, $red500 100%',
