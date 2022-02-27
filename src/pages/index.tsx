@@ -31,7 +31,7 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
 
   const revalidateRate = () => {
     console.log('revalidateCount()', revalidateCount());
-    
+
     if (revalidateCount() === 0) return 0;
     return (revalidateCount() / revalidate) * 100;
   };
