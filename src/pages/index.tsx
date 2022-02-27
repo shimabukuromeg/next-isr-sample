@@ -1,7 +1,29 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+import { useState, useEffect } from 'react'
 
-const Home: NextPage = () => {
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.tz.setDefault("Asia/Tokyo")
+
+const revalidate = 20
+const formatStyle = "MM/DD HH:mm:ss"
+
+const Home: NextPage<{ createdAt: string; nextCreatedAt: string}> = ({createdAt, nextCreatedAt}) => {
+  const [accessTime, setAccessTime] = useState<string>('');
+  const [currentDateTime, setCurrentDateTime] = useState(dayjs().tz().format(formatStyle))
+
+  useEffect(() => {
+    setAccessTime(dayjs().tz().format(formatStyle))
+    const timer = setInterval(() => {
+      setCurrentDateTime(dayjs().tz().format(formatStyle))
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
   return (
     <div>
       <Head>
@@ -10,11 +32,42 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+
       <main>
-        <div>hello, world</div>
+        <h2>revalidateに指定してる値</h2>
+        <h1>{revalidate}s</h1>
+
+        <h2>現在時刻</h2>
+        <h1>{currentDateTime}</h1>
+        <h2>最後にページにアクセスした時間</h2>
+        <h1>
+          {accessTime}
+        </h1>
+        <h2>下記の時刻以降にアクセスしたら改めてHTMLが作られる</h2>
+        <h1>
+          {nextCreatedAt}
+        </h1>
+        <h2>いま表示してるHTMLが作られた時間</h2>
+        <h1>
+          {createdAt}
+        </h1>
       </main>
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const currentTime = dayjs().tz()
+  const createdAt = currentTime.format(formatStyle)
+  const nextCreatedAt = currentTime.add(revalidate, 's').format(formatStyle)
+
+  return {
+    props: {
+      createdAt,
+      nextCreatedAt,
+    },
+    revalidate: revalidate,
+  }
+}
 
 export default Home;
