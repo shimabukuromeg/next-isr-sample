@@ -3,7 +3,14 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useState, useEffect } from 'react';
-import { Container, Text, Card, Grid, Progress } from '@nextui-org/react';
+import {
+  Container,
+  Text,
+  Card,
+  Grid,
+  Progress,
+  Button,
+} from '@nextui-org/react';
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
@@ -30,10 +37,15 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
   };
 
   const revalidateRate = () => {
-    console.log('revalidateCount()', revalidateCount());
-
     if (revalidateCount() === 0) return 0;
     return (revalidateCount() / revalidate) * 100;
+  };
+
+  const ondemandRevalidate = async () => {
+    await fetch('api/revalidate')
+      .catch((error) => {
+        console.error('error', error);
+      });
   };
 
   useEffect(() => {
@@ -83,6 +95,16 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
           {`revalidateに指定してる値：${revalidate}`}
         </Text>
         <Progress value={revalidateRate()} color="gradient" />
+      </Container>
+      <Container
+        display="flex"
+        justify="center"
+        alignItems="center"
+        css={{ h: 60 }}
+      >
+        <Button shadow color="gradient" size="lg" onClick={ondemandRevalidate}>
+          Call Unstable_revalidate API
+        </Button>
       </Container>
       <Grid.Container gap={2} justify="center">
         <Grid xs={12} sm={12}>
