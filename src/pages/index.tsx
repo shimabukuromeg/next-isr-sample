@@ -42,10 +42,9 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
   };
 
   const ondemandRevalidate = async () => {
-    await fetch('api/revalidate')
-      .catch((error) => {
-        console.error('error', error);
-      });
+    await fetch('api/revalidate').catch((error) => {
+      console.error('error', error);
+    });
   };
 
   useEffect(() => {
@@ -129,7 +128,7 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
         <Grid xs={12} sm={6}>
           <Card color="gradient" css={{ h: '$36' }}>
             <Text h6 size={15} color="white" css={{ mt: 0 }}>
-              キャッシュされ続ける残りの秒数
+              （リクエストしても）いま表示してるHTMLがキャッシュされ続ける残りの秒数
             </Text>
             <Container
               display="flex"
