@@ -18,3 +18,8 @@ $ yarn start
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## 参考
+
+https://nextjs.org/blog/next-12-1#on-demand-incremental-static-regeneration-beta
+
+https://vercel.com/docs/concepts/next.js/incremental-static-regeneration#on-demand-revalidation-(beta)
