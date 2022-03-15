@@ -214,7 +214,7 @@ export async function getStaticProps() {
   const nextCreatedAt = currentTime.add(revalidate, 's').format(formatStyle);
 
   // NOTE: ビルド時に unstable_revalidate を実行したら、キャッシュに即時反映されるか検証
-  await fetch('api/revalidate').catch((error) => {
+  await fetch('api/revalidate-part2').catch((error) => {
     console.error('error', error);
   });
 
