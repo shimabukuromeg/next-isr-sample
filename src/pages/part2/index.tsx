@@ -11,7 +11,7 @@ import {
   Progress,
   Button,
 } from '@nextui-org/react';
-import Link from 'next/link';
+
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
@@ -80,9 +80,8 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
           }}
           weight="bold"
         >
-          検証
+          検証パート２
         </Text>
-        <Link href="/part2">ondemand-revalidateページ</Link>
       </Container>
       <Container gap={2} css={{ mb: 20 }}>
         <Text
@@ -213,6 +212,11 @@ export async function getStaticProps() {
   const currentTime = dayjs().tz();
   const createdAt = currentTime.format(formatStyle);
   const nextCreatedAt = currentTime.add(revalidate, 's').format(formatStyle);
+
+  // NOTE: ビルド時に unstable_revalidate を実行したら、キャッシュに即時反映されるか検証
+  await fetch('api/revalidate').catch((error) => {
+    console.error('error', error);
+  });
 
   return {
     props: {
