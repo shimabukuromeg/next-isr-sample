@@ -43,7 +43,7 @@ const Home: NextPage<{ createdAt: string; nextCreatedAt: string }> = ({
   };
 
   const ondemandRevalidate = async () => {
-    await fetch('api/revalidate').catch((error) => {
+    await fetch('api/revalidate-part2').catch((error) => {
       console.error('error', error);
     });
   };
